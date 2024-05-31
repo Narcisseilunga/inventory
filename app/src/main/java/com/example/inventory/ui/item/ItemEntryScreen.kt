@@ -73,7 +73,10 @@ fun ItemEntryScreen(
         ItemEntryBody(
             itemUiState = viewModel.itemUiState,
             onItemValueChange = viewModel::updateUiState,
-            onSaveClick = { },
+            coroutineScope.launch {
+                viewModel.saveItem()
+            }
+    },
             modifier = Modifier
                 .padding(
                     start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
@@ -90,8 +93,9 @@ fun ItemEntryScreen(
 fun ItemEntryBody(
     itemUiState: ItemUiState,
     onItemValueChange: (ItemDetails) -> Unit,
-    onSaveClick: () -> Unit,
+    onSaveClick = {coroutineScope.launch {} },
     modifier: Modifier = Modifier
+
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large)),
